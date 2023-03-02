@@ -8,14 +8,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Data Table',
-      debugShowCheckedModeBanner: false,
-      initialRoute: DataTable1Screen.id,
-      routes: {
-        DataTable1Screen.id: (context) => DataTable1Screen(),
-        DataTable2Screen.id: (context) => DataTable2Screen()
-      }
-    );
+        title: 'Data Table',
+        debugShowCheckedModeBanner: false,
+        initialRoute: DataTable1Screen.id,
+        routes: {
+          DataTable1Screen.id: (context) => DataTable1Screen(),
+          DataTable2Screen.id: (context) => DataTable2Screen()
+        });
   }
 }
 
@@ -64,14 +63,14 @@ class DataTable2Screen extends StatefulWidget {
 }
 
 class _DataTable2ScreenState extends State<DataTable2Screen> {
-  List<table> paises;
+  List<table> datosTabla;
   bool sortAscending;
 
   @override
   void initState() {
     super.initState();
     sortAscending = false;
-    paises = table.getTable();
+    datosTabla = table.getTable();
   }
 
   @override
@@ -91,8 +90,8 @@ class _DataTable2ScreenState extends State<DataTable2Screen> {
                 sortAscending: sortAscending,
                 columns: [
                   DataColumn(
-                      label: Text('Dia'),
-                      numeric: true,
+                      label: Text('Fecha'),
+                      numeric: false,
                       onSort: (columnIndex, ascending) {
                         setState(() {
                           sortAscending = !sortAscending;
@@ -106,29 +105,29 @@ class _DataTable2ScreenState extends State<DataTable2Screen> {
                   ),
                   DataColumn(label: Text('Salida'), numeric: false),
                 ],
-                rows: paises
+                rows: datosTabla
                     .map(
-                      (pais) => DataRow(
-                        selected: pais.selected,
+                      (rowTable) => DataRow(
+                        selected: rowTable.selected,
                         onSelectChanged: (s) {
                           setState(() {
-                            pais.selected = s;
+                            rowTable.selected = s;
                           });
                         },
                         cells: [
                           DataCell(
                             Text(
-                              pais.dia,
+                              rowTable.fecha,
                             ),
                           ),
                           DataCell(
                             Text(
-                              pais.entrada,
+                              rowTable.entrada,
                             ),
                           ),
                           DataCell(
                             Text(
-                              pais.salida,
+                              rowTable.salida,
                             ),
                           ),
                         ],
@@ -141,11 +140,11 @@ class _DataTable2ScreenState extends State<DataTable2Screen> {
                 children: [
                   RichText(
                     text: TextSpan(
-                      children: paises
+                      children: datosTabla
                           .map(
-                            (pais) => (pais.selected)
+                            (datos) => (datos.selected)
                                 ? TextSpan(
-                                    text: pais.dia + '    ',
+                                    text: datos.fecha + '    ',
                                     style: TextStyle(
                                         color: Colors.black, fontSize: 20),
                                   )
@@ -168,43 +167,42 @@ class _DataTable2ScreenState extends State<DataTable2Screen> {
   ordenarColumna(int columnIndex, bool ordenar) {
     if (columnIndex == 0) {
       if (ordenar) {
-        paises.sort((a, b) => a.dia.compareTo(b.dia));
+        datosTabla.sort((a, b) => a.fecha.compareTo(b.fecha));
       } else {
-        paises.sort((a, b) => b.dia.compareTo(a.dia));
+        datosTabla.sort((a, b) => b.fecha.compareTo(a.fecha));
       }
     }
   }
 }
 
-
 //Datos que se almacenan
 class table {
   bool selected;
-  String dia;
+  String fecha;
   String entrada;
   String salida;
 
-  table({this.selected, this.dia, this.entrada, this.salida});
+  table({this.selected, this.fecha, this.entrada, this.salida});
 
   static List<table> getTable() {
     return <table>[
       table(
         selected: false,
-        dia: '1',
+        fecha: '13/02/2023',
         entrada: '8:01',
         salida: '4:32',
       ),
       table(
         selected: false,
-        dia: '6',
+        fecha: '14/02/2023',
         entrada: '7:58',
-        salida:'6:45',
+        salida: '6:45',
       ),
       table(
         selected: false,
-        dia: '11',
+        fecha: '15/02/2023',
         entrada: '8:13',
-        salida:'5:18',
+        salida: '5:18',
       ),
     ];
   }
